@@ -3,7 +3,7 @@ Nim  : 23416255201302
 Semester Pendek Mobile Framework
 
 Admin :
-admin@admin
+admin@admin.com
 admin123
 
 User :
