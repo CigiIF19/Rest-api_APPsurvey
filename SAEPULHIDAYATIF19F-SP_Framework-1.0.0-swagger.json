@@ -1,0 +1,275 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Survey API",
+    "version" : "1.0.0",
+    "description" : "API untuk aplikasi survey."
+  },
+  "paths" : {
+    "/surveys" : {
+      "post" : {
+        "summary" : "Membuat survey baru",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "title" : {
+                    "type" : "string"
+                  },
+                  "description" : {
+                    "type" : "string"
+                  }
+                },
+                "required" : [ "title", "description" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Survey berhasil dibuat",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Survey"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get" : {
+        "summary" : "Mendapatkan semua survey",
+        "responses" : {
+          "200" : {
+            "description" : "Daftar semua survey",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Survey"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/surveys/{survey_id}" : {
+      "get" : {
+        "summary" : "Mengambil detail survey tertentu",
+        "parameters" : [ {
+          "name" : "survey_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Detail survey",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Survey"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/surveys/{survey_id}/responses" : {
+      "post" : {
+        "summary" : "Menjawab survey",
+        "parameters" : [ {
+          "name" : "survey_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "user_id" : {
+                    "type" : "integer"
+                  },
+                  "answers" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "question_id" : {
+                          "type" : "integer"
+                        },
+                        "answer" : {
+                          "type" : "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required" : [ "user_id", "answers" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Jawaban survey berhasil disimpan",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get" : {
+        "summary" : "Mendapatkan semua jawaban untuk survey tertentu",
+        "parameters" : [ {
+          "name" : "survey_id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Daftar semua jawaban",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Response"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Survey" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "example" : 1
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "Survei Kepuasan Pelanggan"
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "Survei ini bertujuan untuk mengukur kepuasan pelanggan terhadap produk kami."
+          },
+          "created_at" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2024-07-28"
+          },
+          "updated_at" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2024-07-29"
+          },
+          "questions" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Question"
+            }
+          }
+        }
+      },
+      "Question" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "example" : 1
+          },
+          "question" : {
+            "type" : "string",
+            "example" : "Seberapa puas Anda dengan produk kami?"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "multiple-choice", "text" ],
+            "example" : "multiple-choice"
+          },
+          "options" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "example" : [ "Sangat Puas", "Puas", "Cukup", "Tidak Puas" ]
+          }
+        },
+        "required" : [ "id", "text", "type" ]
+      },
+      "Response" : {
+        "type" : "object",
+        "properties" : {
+          "survey_id" : {
+            "type" : "integer",
+            "example" : 1
+          },
+          "user_id" : {
+            "type" : "integer",
+            "example" : 1
+          },
+          "answers" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "question_id" : {
+                  "type" : "integer",
+                  "example" : 1
+                },
+                "answer" : {
+                  "type" : "string",
+                  "example" : "puas"
+                }
+              }
+            }
+          },
+          "created_at" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2024-07-29"
+          },
+          "updated_at" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      }
+    }
+  },
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/SAEPULHIDAYATIF19F/SP_Framework/1.0.0"
+  } ]
+}
