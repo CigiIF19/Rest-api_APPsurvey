@@ -12,8 +12,10 @@ admin123
 
 langkah instalasai :
 1. download Aplikasi terlebih dahulu
-2. Buka Xampp
-3. masukan database Xampp dengan nama : survey_db
-4. database berada di folder -> database
-5. jalankan dengan url : localhost/survey
-6. masukan email dan password yang ada di atas.
+2. setelah di download, extrack aplikasi yang sudah di downloads
+3. kemudian extrack file plugins.zip -> kemudian pindahkan kedalam folder assets
+4. setelah itu, Buka aplikasi Xampp
+5. masukan database Xampp dengan nama : survey_db
+6. database berada di folder -> database
+7. jalankan dengan url : localhost/survey
+8. masukan email dan password yang ada di atas.
